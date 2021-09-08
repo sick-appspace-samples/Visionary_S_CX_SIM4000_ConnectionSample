@@ -1,25 +1,4 @@
---[[----------------------------------------------------------------------------
 
-  Application Name: Sim_4000_ConnectionSample_Visionary_S_CX
-    
-  Summary:
-  Connect to four different Visionary-S CX cameras, calculate the PointClouds and display them in the viewer
-  
-  Description:
-  Connect to the Visionary-S CX cameras on the configured IP addresses via four different
-  network interfaces and receive the images from them. Calculate the PointClouds out of the
-  Z images and present the point clouds in the SOPASair viewer.
-  
-  How to run:
-  Connect four Visionary-S CX cameras to the Ethernet ports of the SIM with the matching IP addresses.
-  Start by running the app (F5) or debugging (F7+F10).
-  Set a breakpoint on the first row inside the main function to debug step-by-step.
-  See the results in the different image viewer on the DevicePage.
-  
-  More Information:
-  If you want more or less cameras connected remove or add devices like in the seen schema.
-  
-------------------------------------------------------------------------------]]
 --Start of Global Scope---------------------------------------------------------
 -- set the wanted log level - default is WARNING
 Log.setLevel("INFO")
