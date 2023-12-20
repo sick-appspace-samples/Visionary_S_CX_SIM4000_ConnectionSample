@@ -42,8 +42,8 @@ local pc_converters =
     Image.PointCloudConversion.PlanarDistance.create(),
     Image.PointCloudConversion.PlanarDistance.create() }
 
--- helper function to print the camera specific parameters to the console for debugging
---@printModel(cm:Image.Provider.RemoteCamera.V3SXX2Config)
+---helper function to print the camera specific parameters to the console for debugging
+---@param cm Image.Provider.RemoteCamera.V3SXX2Config
 local function printModel(cm)
   local camId = cm:getCameraID()
   local width, height = cm:getCalibrationImageSize()
@@ -63,7 +63,7 @@ local function printModel(cm)
   Log.info(string.format("##### end of model"))
 end
 
--- function to connect to a camera and initialize the point cloud converter
+---function to connect to a camera and initialize the point cloud converter
 local function connectToCamera(cam, pc_converter)
   -- connect to device
   if cam:connect() then
@@ -71,7 +71,7 @@ local function connectToCamera(cam, pc_converter)
     local cam_cfg = cam:getConfig()
     -- do not use "cam_cfg:getCameraModel()" that will not work!
     local cam_model = Image.Provider.RemoteCamera.V3SXX2Config.getCameraModel(cam_cfg)
-    
+
     -- support also camera models of Visionary-T CX - the device type and point cloud converter needs to be changed then
     if cam_model == nil then
       Log.info("No CameraModel received from a Visionary-S CX, try if it's a Visionary-T CX.")
@@ -123,7 +123,7 @@ local function handleNewImage(image, num)
 
   -- create the camera-to-world transformation matrix out of it
   local cameraToWorldTransform = Transform.createRigidEuler3D("ZYX", rotationZ, rotationY, rotationX, translationX, translationY, translationZ)
-  
+
   -- transform the existing pointcloud by replacing it
   PointCloud.transformInplace(pointCloud, cameraToWorldTransform)
   --]]
@@ -137,27 +137,31 @@ local function handleNewImage(image, num)
   imageCnt[num] = imageCnt[num] + 1
 end
 
---@handleOnNewImageCam1(image[+]:Image, sensordata:SensorData)
+---@param  image Image[]
+---@param sensordata SensorData
 function handleOnNewImageCam1(image, sensordata)
   handleNewImage(image, 1)
 end
 
---@handleOnNewImageCam2(image[+]:Image, sensordata:SensorData)
+---@param image Image[]
+---@param sensordata SensorData
 function handleOnNewImageCam2(image, sensordata)
   handleNewImage(image, 2)
 end
 
---@handleOnNewImageCam3(image[+]:Image, sensordata:SensorData)
+---@param image Image[]
+---@param sensordata SensorData
 function handleOnNewImageCam3(image, sensordata)
   handleNewImage(image, 3)
 end
 
---@handleOnNewImageCam4(image[+]:Image, sensordata:SensorData)
+---@param image Image[]
+---@param sensordata SensorData
 function handleOnNewImageCam4(image, sensordata)
   handleNewImage(image, 4)
 end
 
--- display the received and processed framerate
+---display the received and processed framerate
 function handleOnExpiredFPSCount()
   local fps = {}
   for i = 1, 4, 1 do
